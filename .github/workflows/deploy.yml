@@ -1,8 +1,13 @@
 on:
-  push
-
-env:
-  targetEnv: test
+  workflow_dispatch:
+   inputs:
+    appenv:
+      type: choice
+      description: Choose the target environment
+      options: 
+        - dev
+        - test
+        - prod
 
 name: Azure ARM
 jobs:
@@ -24,5 +29,4 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./ARM-Templates/container-webapp-template.json
-        parameters: webAppName=WTHApptre-${{ env.targetEnv }}
-        
+        parameters: webAppName=WTHApp-${{ github.event.inputs.appenv }}
